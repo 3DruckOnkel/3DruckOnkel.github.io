@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3D Druck Onkel</title>
+
+  <!-- Libs -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    /* -------------------- THEME TOKENS -------------------- */
+    :root{
+      --bg: #0b0f16;
+      --bg-elev: #111827;
+      --text: #e5e7eb;
+      --muted: #9aa5b1;
+      --accent: #8cf7c6;
+      --accent-2:#7c99ff;
+      --card: #0f1623;
+      --border: rgba(255,255,255,.06);
+      --pill-bg:#1f2937;
+      --pill-text:#dbe3f0;
+      --chip-bg:#111827;
+      --chip-text:#fff;
+      --overlay:#000000cc;
+    }
+    [data-theme="light"]{
+      --bg:#f5f7fb;
+      --bg-elev:#ffffff;
+      --text:#0f172a;
+      --muted:#4b5563;
+      --accent:#0ea5e9;
+      --accent-2:#22c55e;
+      --card:#ffffff;
+      --border:rgba(0,0,0,.08);
+      --pill-bg:#eef2ff;
+      --pill-text:#3949ab;
+      --chip-bg:#111827; /* dunkel damit im Light gut lesbar! */
+      --chip-text:#ffffff;
+      --overlay:#000000cc;
+    }
+
+    /* -------------------- BASE -------------------- */
+    html,body{ height:100%; }
+    body { background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; }
+    a { color:inherit; }
+    a:hover, a:focus { color:inherit; text-decoration:none; }
+
+    .navbar { border:none; background:var(--bg-elev); box-shadow:0 6px 28px rgba(0,0,0,.25); }
+    .navbar-brand { font-weight:700; letter-spacing:.3px; }
+
+    /* -------------------- HERO (WOW) -------------------- */
+    .hero{
+      position:relative; overflow:hidden;
+      background: radial-gradient(1200px 500px at 10% -10%, rgba(124,153,255,.22), transparent 55%),
+                  radial-gradient(900px 480px at 100% 0%, rgba(142,248,200,.18), transparent 60%);
+      padding:44px 0 26px;
+    }
+    .hero .title{ font-size:28px; font-weight:800; letter-spacing:.2px; }
+    .hero .sub{ color:var(--muted); margin-top:6px; }
+
+    .hero-glow{
+      position:absolute; inset:-30% -10% auto -10%; height:320px;
+      background: radial-gradient(closest-side, rgba(124,153,255,.18), transparent 70%),
+                  radial-gradient(closest-side, rgba(142,248,200,.16), transparent 70%);
+      filter: blur(32px);
+      z-index:0; transform:scale(1.06);
+    }
+
+    /* -------------------- CATEGORIES -------------------- */
+    .categories { padding:20px 0 6px; position:relative; z-index:1; }
+    .category-card {
+      background:var(--card); border-radius:16px; border:1px solid var(--border);
+      box-shadow:0 10px 22px rgba(0,0,0,.22); transition:transform .25s ease, box-shadow .25s ease;
+      display:block; padding:22px 18px; height:140px;
+    }
+    .category-card:hover { transform:translateY(-3px); box-shadow:0 16px 34px rgba(0,0,0,.32); }
+    .category-icon { font-size:28px; margin-bottom:12px; line-height:1; color:var(--accent); }
+    .category-title { font-size:18px; font-weight:700; }
+    .category-sub { color:var(--muted); font-size:13px; }
+
+    /* -------------------- GALLERY -------------------- */
+    #gallery { padding:30px 0; display:none; position:relative; z-index:1; }
+
+    .section-header { margin:10px 0 20px; display:flex; align-items:center; justify-content:space-between; }
+    .section-header h2 { margin:0; font-weight:800; font-size:22px; }
+    .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:var(--pill-bg); color:var(--pill-text); font-size:12px; font-weight:700; }
+
+    .img-wrapper { 
+      position:relative; margin-top:15px; border-radius:14px; overflow:hidden; 
+      background:var(--card); border:1px solid var(--border); 
+      box-shadow:0 12px 26px rgba(0,0,0,.28);
+    }
+    .img-wrapper img { width:100%; display:block; }
+
+    /* Glow-Rand + Shine */
+    .img-wrapper::before{
+      content:""; position:absolute; inset:0; border-radius:14px; padding:1px; pointer-events:none;
+      background: linear-gradient(135deg, rgba(124,153,255,.35), rgba(142,248,200,.25));
+      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor; mask-composite:exclude; opacity:.55;
+    }
+    .img-wrapper::after{
+      content:""; position:absolute; top:-120%; left:-30%;
+      width:60%; height:300%; transform: rotate(20deg);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      transition: transform .7s ease, opacity .3s ease; opacity:0;
+    }
+    .img-wrapper:hover::after{ transform: translateX(220%) rotate(20deg); opacity:1; }
+
+    .img-overlay { background:rgba(0,0,0,.45); width:100%; height:100%; position:absolute; top:0; left:0; display:flex; justify-content:center; align-items:center; opacity:0; transition:opacity .25s ease; }
+    .img-overlay i { color:#fff; font-size:3em; }
+    .img-wrapper:hover .img-overlay{ opacity:1; }
+
+    /* nur aktive Kategorie anzeigen */
+    #image-gallery[data-active] .image { display:none !important; }
+    #image-gallery[data-active="christbaum"] .image[data-category="christbaum"],
+    #image-gallery[data-active="tuerrahmen"] .image[data-category="tuerrahmen"],
+    #image-gallery[data-active="schluessel"] .image[data-category="schluessel"],
+    #image-gallery[data-active="schriftzuege"] .image[data-category="schriftzuege"],
+    #image-gallery[data-active="einschulung"] .image[data-category="einschulung"],
+    #image-gallery[data-active="kommunion"] .image[data-category="kommunion"],
+    #image-gallery[data-active="geburt"] .image[data-category="geburt"],
+    #image-gallery[data-active="geburtstag"] .image[data-category="geburtstag"],
+    #image-gallery[data-active="zaubertonie"] .image[data-category="zaubertonie"] { display:block !important; }
+
+    /* -------------------- PRICE CHIP -------------------- */
+    .price-chip{
+      position:absolute; left:10px; bottom:10px;
+      background:var(--chip-bg);
+      color:var(--chip-text);
+      border:1px solid var(--border);
+      border-radius:999px; padding:6px 10px;
+      font-size:12px; font-weight:800;
+      box-shadow:0 10px 24px rgba(0,0,0,.35);
+      display:flex; align-items:center; gap:6px; text-shadow:0 1px 0 rgba(0,0,0,.35);
+    }
+    .price-chip i{ font-size:12px; color:var(--chip-text); }
+
+    /* -------------------- FLOATING THEME TOGGLE -------------------- */
+    .theme-toggle{
+      position:fixed; right:16px; bottom:16px; z-index:9999;
+      background:var(--bg-elev); color:var(--text);
+      border:1px solid var(--border); border-radius:999px;
+      padding:10px 14px; font-weight:700; display:flex; align-items:center; gap:8px;
+      box-shadow:0 14px 32px rgba(0,0,0,.35);
+    }
+    .theme-toggle .icon{ width:20px; text-align:center; }
+
+    .site-footer { padding:40px 0 30px; color:var(--muted); text-align:center; font-size:13px; }
+
+    /* Overlay */
+    #overlay{ display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+      background:var(--overlay); justify-content:center; align-items:center; z-index:9999; }
+    #overlay img{ max-width:90%; max-height:90%; border-radius:12px; box-shadow:0 30px 70px rgba(0,0,0,.65); }
+    #exitButton{ position:absolute; top:20px; right:30px; font-size:30px; color:#fff; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="title"><img src="Neues Projekt.png" alt="3D Druck Onkel" style="height:150px;"></div>
+            <div class="sub">Handgemachte Deko & Geschenkideen – mit Glitzersterne-Preisen ✨</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAV -->
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-main">
+          <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">3D Druck Onkel</a>
+      </div>
+      <div class="collapse navbar-collapse" id="nav-main">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#kategorien">Kategorien</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CATEGORIES -->
+  <section id="kategorien" class="categories">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="christbaum">
+            <div class="category-icon"><i class="fa fa-star-o"></i></div>
+            <div class="category-title">Christbaumdeko / Geschenkschmuck</div>
+            <div class="category-sub">Alle verfügbaren Bilder</div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="tuerrahmen">
+            <div class="category-icon"><i class="fa fa-home"></i></div>
+            <div class="category-title">Türrahmen-Deko</div>
+            <div class="category-sub">Alle verfügbaren Bilder</div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="schluessel">
+            <div class="category-icon"><i class="fa fa-key"></i></div>
+            <div class="category-title">Schlüsselanhänger</div>
+            <div class="category-sub">Alle verfügbaren Bilder</div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="schriftzuege">
+            <div class="category-icon"><i class="fa fa-font"></i></div>
+            <div class="category-title">Schriftzüge</div>
+            <div class="category-sub">Alle verfügbaren Bilder</div>
+          </a>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="geburt">
+            <div class="category-icon"><i class="fa fa-child"></i></div>
+            <div class="category-title">Geburt</div>
+            <div class="category-sub">Alle verfügbaren Bilder</div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="einschulung">
+            <div class="category-icon"><i class="fa fa-graduation-cap"></i></div>
+            <div class="category-title">Einschulung</div>
+            <div class="category-sub">Alle verfügbaren Bilder</div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="kommunion">
+            <div class="category-icon" aria-hidden="true">✝</div>
+            <div class="category-title">Kommunion</div>
+            <div class="category-sub">Alle verfügbaren Bilder</div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="geburtstag">
+            <div class="category-icon"><i class="fa fa-birthday-cake"></i></div>
+            <div class="category-title">Geburtstag</div>
+            <div class="category-sub">Alle verfügbaren Bilder</div>
+          </a>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="zaubertonie">
+            <div class="category-icon"><i class="fa fa-magic"></i></div>
+            <div class="category-title">Zaubertonie</div>
+            <div class="category-sub">Alle verfügbaren Bilder</div>
+          </a>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+          <span class="category-card" title="Demnächst" style="opacity:.55; cursor:not-allowed;">
+            <div class="category-icon"><i class="fa fa-ellipsis-h"></i></div>
+            <div class="category-title">Sonstiges</div>
+            <div class="category-sub">Bald verfügbar</div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-header">
+        <h2>Galerie</h2>
+        <span class="pill" id="gallery-category"></span>
+      </div>
+      <div id="image-gallery">
+        <div class="row">
+          <!-- Christbaumdeko / Geschenkschmuck (Preis fix 3,50) -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Bisasam.jpg"><img src="https://hdmu.github.io/Bisasam.jpg" alt="Bisasam"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Elsa.jpg"><img src="https://hdmu.github.io/Elsa.jpg" alt="Elsa"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Glumanda.jpg"><img src="https://hdmu.github.io/Glumanda.jpg" alt="Glumanda"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Harrypotter.jpg"><img src="https://hdmu.github.io/Harrypotter.jpg" alt="Harry Potter"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Hund.jpg"><img src="https://hdmu.github.io/Hund.jpg" alt="Hund"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/HundBulldoge.jpg"><img src="https://hdmu.github.io/HundBulldoge.jpg" alt="Hund Bulldogge"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Hundeknochen.jpg"><img src="https://hdmu.github.io/Hundeknochen.jpg" alt="Hundeknochen"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Husky.jpg"><img src="https://hdmu.github.io/Husky.jpg" alt="Husky"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Katze.jpg"><img src="https://hdmu.github.io/Katze.jpg" alt="Katze"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Mario.jpg"><img src="https://hdmu.github.io/Mario.jpg" alt="Mario"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/MickeyMausName.jpg"><img src="https://hdmu.github.io/MickeyMausName.jpg" alt="Mickey Maus Name"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Naruto.jpg"><img src="https://hdmu.github.io/Naruto.jpg" alt="Naruto"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/NormaleKugel.jpg"><img src="https://hdmu.github.io/NormaleKugel.jpg" alt="Normale Kugel"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Pikachu.jpg"><img src="https://hdmu.github.io/Pikachu.jpg" alt="Pikachu"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Schalke.jpg"><img src="https://hdmu.github.io/Schalke.jpg" alt="Schalke"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Stitch.jpg"><img src="https://hdmu.github.io/Stitch.jpg" alt="Stitch"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/Supernatural.jpg"><img src="https://hdmu.github.io/Supernatural.jpg" alt="Supernatural"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/islandpferd.jpg"><img src="https://hdmu.github.io/islandpferd.jpg" alt="Islandpferd"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/lionking.jpg"><img src="https://hdmu.github.io/lionking.jpg" alt="Lion King"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/onkelz.jpg"><img src="https://hdmu.github.io/onkelz.jpg" alt="Onkelz"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/vfl.jpg"><img src="https://hdmu.github.io/vfl.jpg" alt="VfL Bochum"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/herz.jpg"><img src="https://hdmu.github.io/herz.jpg" alt="Herz"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/tennis.jpg"><img src="https://hdmu.github.io/tennis.jpg" alt="Tennis"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/mickey2.jpg"><img src="https://hdmu.github.io/mickey2.jpg" alt="Mickey 2"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/arielle.jpg"><img src="https://hdmu.github.io/arielle.jpg" alt="Arielle"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/spidey.jpg"><img src="https://hdmu.github.io/spidey.jpg" alt="Spidey"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/spidermaus.jpg"><img src="https://hdmu.github.io/spidermaus.jpg" alt="Spidermaus"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/vaiana.jpg"><img src="https://hdmu.github.io/vaiana.jpg" alt="Vaiana"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+
+          <!-- Schriftzüge (Preis-Bereich 5–10) -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schriftzuege" data-price="5-10"><div class="img-wrapper"><a href="https://hdmu.github.io/Ergotherapeutinschriftzug.jpg"><img src="https://hdmu.github.io/Ergotherapeutinschriftzug.jpg" alt="Ergotherapeutin Schriftzug"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schriftzuege" data-price="5-10"><div class="img-wrapper"><a href="https://hdmu.github.io/schriftkonfetti.jpg"><img src="https://hdmu.github.io/schriftkonfetti.jpg" alt="Schriftkonfetti Schriftzug"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+
+          <!-- Einschulung -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="einschulung" data-price="4.50"><div class="img-wrapper"><a href="https://hdmu.github.io/schriftschulkind2026.jpg"><img src="https://hdmu.github.io/schriftschulkind2026.jpg" alt="Schulkind 2026"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="einschulung" data-price="4.50"><div class="img-wrapper"><a href="https://hdmu.github.io/schulkind2026rund.jpg"><img src="https://hdmu.github.io/schulkind2026rund.jpg" alt="Schulkind 2026 rund"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+
+          <!-- Kommunion -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="kommunion" data-price="4.50"><div class="img-wrapper"><a href="https://hdmu.github.io/kommuninrund.jpg"><img src="https://hdmu.github.io/kommuninrund.jpg" alt="Kommunion rund"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+
+          <!-- Schlüsselanhänger (individuell) -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="1.80"><div class="img-wrapper"><a href="https://hdmu.github.io/keyringkennzeichen.jpg"><img src="https://hdmu.github.io/keyringkennzeichen.jpg" alt="Schlüsselanhänger Kennzeichen"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://hdmu.github.io/keylieblingslehrerin.jpg"><img src="https://hdmu.github.io/keylieblingslehrerin.jpg" alt="Schlüsselanhänger Lieblingslehrerin"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://hdmu.github.io/keybesteerzieherin.jpg"><img src="https://hdmu.github.io/keybesteerzieherin.jpg" alt="Schlüsselanhänger Beste Erzieherin"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://hdmu.github.io/keybestelehrerin.jpg"><img src="https://hdmu.github.io/keybestelehrerin.jpg" alt="Schlüsselanhänger Beste Lehrerin"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://hdmu.github.io/keybestererzieher.jpg"><img src="https://hdmu.github.io/keybestererzieher.jpg" alt="Schlüsselanhänger Bester Erzieher"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://hdmu.github.io/keybesterlehrer.jpg"><img src="https://hdmu.github.io/keybesterlehrer.jpg" alt="Schlüsselanhänger Bester Lehrer"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://hdmu.github.io/keylieblingserzieher.jpg"><img src="https://hdmu.github.io/keylieblingserzieher.jpg" alt="Schlüsselanhänger Lieblingserzieher"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://hdmu.github.io/keylieblingserzieherin.jpg"><img src="https://hdmu.github.io/keylieblingserzieherin.jpg" alt="Schlüsselanhänger Lieblingserzieherin"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://hdmu.github.io/keylieblingslehrer.jpg"><img src="https://hdmu.github.io/keylieblingslehrer.jpg" alt="Schlüsselanhänger Lieblingslehrer"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+
+          <!-- Geburt -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="geburt" data-price="10.00"><div class="img-wrapper"><a href="https://hdmu.github.io/geburtsbilderrahmen.jpg"><img src="https://hdmu.github.io/geburtsbilderrahmen.jpg" alt="Geburt – Name & Datum"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+
+          <!-- Geburtstag -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="geburtstag" data-price="6.00"><div class="img-wrapper"><a href="https://hdmu.github.io/geburtsagshalter.jpg"><img src="https://hdmu.github.io/geburtsagshalter.jpg" alt="Geburtstagshalter"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+
+          <!-- Türrahmen-Deko -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="3.50"><div class="img-wrapper"><a href="https://hdmu.github.io/wichteltür.jpg"><img src="https://hdmu.github.io/wichteltür.jpg" alt="Wichteltür"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="4.00"><div class="img-wrapper"><a href="https://hdmu.github.io/weihnachtenkatzetür.jpg"><img src="https://hdmu.github.io/weihnachtenkatzetür.jpg" alt="Weihnachten Katze Tür"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="4.00"><div class="img-wrapper"><a href="https://hdmu.github.io/pawpatroltuerrahmen.jpg"><img src="https://hdmu.github.io/pawpatroltuerrahmen.jpg" alt="Paw Patrol Türrahmen"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="4.00"><div class="img-wrapper"><a href="https://hdmu.github.io/lambotuerrahmen Kopie.jpg"><img src="https://hdmu.github.io/lambotuerrahmen Kopie.jpg" alt="Lambo"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="4.00"><div class="img-wrapper"><a href="https://hdmu.github.io/pferdltuerrahmen Kopie.jpg"><img src="https://hdmu.github.io/pferdltuerrahmen Kopie.jpg" alt="Pferd"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+
+          <!-- Zaubertonie -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="zaubertonie" data-price="5.00"><div class="img-wrapper"><a href="https://hdmu.github.io/kleinewirtonie.jpg"><img src="https://hdmu.github.io/kleinewirtonie.jpg" alt="Zaubertonie – Kleine Wir Tonie"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="zaubertonie" data-price="5.00"><div class="img-wrapper"><a href="https://hdmu.github.io/stockmanntonie.jpg"><img src="https://hdmu.github.io/stockmanntonie.jpg" alt="Zaubertonie – Stockmann Tonie"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+        </div><!-- row -->
+      </div><!-- image-gallery -->
+    </div>
+  </section>
+
+  <footer class="site-footer"><div class="container">© <span id="year"></span> 3D Druck Onkel</div></footer>
+
+  <!-- Lightbox Overlay -->
+  <div id="overlay"><img src="" alt=""><div id="exitButton">&times;</div></div>
+
+  <!-- Floating Theme Toggle -->
+  <button class="theme-toggle" id="themeBtn" aria-label="Theme umschalten">
+    <span class="icon">🌙</span><span class="txt">Dark</span>
+  </button>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Jahr
+  var yearEl = document.getElementById('year');
+  if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
+
+  // ---------------- Galerie-Aktivierung (Deep-Link) ----------------
+  var gallerySection = document.getElementById('gallery');
+  var gallery = document.getElementById('image-gallery');
+  var pill = document.getElementById('gallery-category');
+
+  var cards = document.querySelectorAll('.show-gallery');
+  var validCategories = Array.prototype.map.call(cards, function(el){ return el.getAttribute('data-category'); });
+
+  Array.prototype.forEach.call(cards, function(el){
+    var cat = el.getAttribute('data-category');
+    el.setAttribute('href', '#' + encodeURIComponent(cat));
+  });
+
+  function activateCategory(category){
+    if(!category || validCategories.indexOf(category) === -1) return;
+    gallerySection.style.display = 'block';
+    var card = document.querySelector('.show-gallery[data-category="'+category+'"]');
+    var titleEl = card ? card.querySelector('.category-title') : null;
+    if (titleEl && pill) { pill.textContent = titleEl.textContent; }
+    gallery.setAttribute('data-active', category);
+    var items = gallery.querySelectorAll('.image');
+    for (var i=0; i<items.length; i++) {
+      var it = items[i];
+      it.style.display = (it.getAttribute('data-category')===category) ? 'block' : 'none';
+    }
+    var top = gallerySection.getBoundingClientRect().top + window.pageYOffset - 50;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+
+  function readHashAndActivate(){
+    var raw = window.location.hash.replace(/^#/, '');
+    if(!raw) return;
+    if (raw.toLowerCase() === 'kategorien') {
+      var kat = document.getElementById('kategorien');
+      var top = kat.getBoundingClientRect().top + window.pageYOffset - 50;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+      return;
+    }
+    var cat = decodeURIComponent(raw);
+    activateCategory(cat);
+  }
+  readHashAndActivate();
+  window.addEventListener('hashchange', readHashAndActivate);
+
+  // ---------------- Lightbox ----------------
+  var overlay = document.getElementById('overlay');
+  var overlayImg = overlay.querySelector('img');
+
+  document.addEventListener('click', function(e){
+    var trigger = e.target.closest('.img-overlay, .img-wrapper a');
+    if(trigger){
+      e.preventDefault();
+      var imgTag = trigger.closest('.img-wrapper').querySelector('img');
+      if(imgTag){
+        overlayImg.setAttribute('src', imgTag.getAttribute('src'));
+        overlay.style.display = 'flex';
+      }
+      return;
+    }
+    if(e.target.closest('#exitButton')){
+      overlay.style.display = 'none';
+      return;
+    }
+    var catBtn = e.target.closest('.show-gallery');
+    if(catBtn){ activateCategory(catBtn.getAttribute('data-category')); return; }
+  });
+
+  // ---------------- Preisschilder (Einzelpreis, Bereich oder Text) ----------------
+  function fmt(n){ return Number(n).toFixed(2).replace('.', ','); }
+  function chipHtml(text){ return '<i class="fa fa-star"></i> ✨ ' + text + ' Glitzersterne'; }
+
+  function ensureChip(wrapper){
+    var chip = wrapper.querySelector('.price-chip');
+    if(!chip){ chip = document.createElement('span'); chip.className = 'price-chip'; wrapper.appendChild(chip); }
+    return chip;
+  }
+
+  function parsePriceAttr(v){
+    if(v === null || v === undefined) return null;
+    var s = String(v).trim();
+    if(!s) return null;
+    var m = s.match(/^(\d+(?:\.\d{1,2})?)\s*-\s*(\d+(?:\.\d{1,2})?)$/);
+    if(m){ return { type:'range', min: parseFloat(m[1]), max: parseFloat(m[2]) }; }
+    if(/^\d+(?:\.\d{1,2})?$/.test(s)){ return { type:'single', value: parseFloat(s) }; }
+    return { type:'text', text: s };
+  }
+
+  function applyPrice(imageEl){
+    var wrapper = imageEl.querySelector('.img-wrapper');
+    if(!wrapper) return;
+    var chip = wrapper.querySelector('.price-chip');
+    var v = imageEl.getAttribute('data-price');
+    var parsed = parsePriceAttr(v);
+    if(!parsed){ if(chip) chip.remove(); return; }
+
+    var display;
+    if(parsed.type === 'single')      display = fmt(parsed.value);
+    else if(parsed.type === 'range')  display = fmt(parsed.min) + '–' + fmt(parsed.max);
+    else                              display = parsed.text;
+
+    ensureChip(wrapper).innerHTML = chipHtml(display);
+  }
+
+  document.querySelectorAll('#image-gallery .image').forEach(applyPrice);
+
+  var priceObs = new MutationObserver(function(mutations){
+    mutations.forEach(function(m){
+      if(m.type === 'attributes' && m.attributeName === 'data-price'){
+        applyPrice(m.target);
+      }
+    });
+  });
+  document.querySelectorAll('#image-gallery .image').forEach(function(el){
+    priceObs.observe(el, { attributes:true, attributeFilter:['data-price'] });
+  });
+
+  // ---------------- Theme Toggle + Persistenz ----------------
+  var btn = document.getElementById('themeBtn');
+  function setTheme(t){
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+    btn.querySelector('.txt').textContent = t === 'dark' ? 'Dark' : 'Light';
+    btn.querySelector('.icon').textContent = t === 'dark' ? '🌙' : '☀️';
+  }
+  btn.addEventListener('click', function(){
+    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    setTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+  // Startzustand
+  var saved = localStorage.getItem('theme');
+  if(saved){ setTheme(saved); } else { setTheme('dark'); }
+
+  // ---------------- Mini-Parallax für Hero-Glow ----------------
+  (function(){
+    var glow = document.querySelector('.hero-glow');
+    if(!glow) return;
+    var lastY = 0;
+    window.addEventListener('scroll', function(){
+      var y = window.scrollY || 0;
+      var t = 'translate3d(0,' + (y * 0.04).toFixed(2) + 'px,0) scale(1.06)';
+      if (y !== lastY){ glow.style.transform = t; lastY = y; }
+    }, { passive:true });
+  })();
+});
+</script>
+</body>
+</html>
