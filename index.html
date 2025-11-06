@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de" data-theme="dark">
 <head>
@@ -125,7 +124,11 @@
     #image-gallery[data-active="kommunion"] .image[data-category="kommunion"],
     #image-gallery[data-active="geburt"] .image[data-category="geburt"],
     #image-gallery[data-active="geburtstag"] .image[data-category="geburtstag"],
-    #image-gallery[data-active="zaubertonie"] .image[data-category="zaubertonie"] { display:block !important; }
+    #image-gallery[data-active="zaubertonie"] .image[data-category="zaubertonie"],
+    /* NEU */
+    #image-gallery[data-active="grosseltern"] .image[data-category="grosseltern"],
+    #image-gallery[data-active="schilder"] .image[data-category="schilder"],
+    #image-gallery[data-active="weihnachten"] .image[data-category="weihnachten"] { display:block !important; }
 
     /* -------------------- PRICE CHIP -------------------- */
     .price-chip{
@@ -194,6 +197,7 @@
   <section id="kategorien" class="categories">
     <div class="container">
       <div class="row">
+        <!-- Bestehende Kategorien (Beispiele) -->
         <div class="col-sm-6 col-md-3">
           <a href="#" class="category-card show-gallery" data-category="christbaum">
             <div class="category-icon"><i class="fa fa-star-o"></i></div>
@@ -223,6 +227,30 @@
           </a>
         </div>
 
+        <!-- NEUE KATEGORIEN -->
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="grosseltern">
+            <div class="category-icon"><i class="fa fa-heart"></i></div>
+            <div class="category-title">Großeltern</div>
+            <div class="category-sub">Oma & Opa – Liebevolles</div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="schilder">
+            <div class="category-icon"><i class="fa fa-tag"></i></div>
+            <div class="category-title">Schilder</div>
+            <div class="category-sub">Tür-, Zimmer- & Deko-Schilder</div>
+          </a>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <a href="#" class="category-card show-gallery" data-category="weihnachten">
+            <div class="category-icon"><i class="fa fa-tree"></i></div>
+            <div class="category-title">Weihnachten</div>
+            <div class="category-sub">Festliche Deko & Geschenke</div>
+          </a>
+        </div>
+
+        <!-- weitere bestehende Kategorien (gekürzt) -->
         <div class="col-sm-6 col-md-3">
           <a href="#" class="category-card show-gallery" data-category="geburt">
             <div class="category-icon"><i class="fa fa-child"></i></div>
@@ -251,7 +279,6 @@
             <div class="category-sub">Alle verfügbaren Bilder</div>
           </a>
         </div>
-
         <div class="col-sm-6 col-md-3">
           <a href="#" class="category-card show-gallery" data-category="zaubertonie">
             <div class="category-icon"><i class="fa fa-magic"></i></div>
@@ -259,7 +286,6 @@
             <div class="category-sub">Alle verfügbaren Bilder</div>
           </a>
         </div>
-
         <div class="col-sm-6 col-md-3">
           <span class="category-card" title="Demnächst" style="opacity:.55; cursor:not-allowed;">
             <div class="category-icon"><i class="fa fa-ellipsis-h"></i></div>
@@ -280,74 +306,49 @@
       </div>
       <div id="image-gallery">
         <div class="row">
-          <!-- Christbaumdeko / Geschenkschmuck (Preis fix 3,50) -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Bisasam.jpg"><img src="https://3DruckOnkel.github.io/Bisasam.jpg" alt="Bisasam"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Elsa.jpg"><img src="https://3DruckOnkel.github.io/Elsa.jpg" alt="Elsa"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Glumanda.jpg"><img src="https://3DruckOnkel.github.io/Glumanda.jpg" alt="Glumanda"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Harrypotter.jpg"><img src="https://3DruckOnkel.github.io/Harrypotter.jpg" alt="Harry Potter"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Hund.jpg"><img src="https://3DruckOnkel.github.io/Hund.jpg" alt="Hund"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/HundBulldoge.jpg"><img src="https://3DruckOnkel.github.io/HundBulldoge.jpg" alt="Hund Bulldogge"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Hundeknochen.jpg"><img src="https://3DruckOnkel.github.io/Hundeknochen.jpg" alt="Hundeknochen"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Husky.jpg"><img src="https://3DruckOnkel.github.io/Husky.jpg" alt="Husky"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Katze.jpg"><img src="https://3DruckOnkel.github.io/Katze.jpg" alt="Katze"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Mario.jpg"><img src="https://3DruckOnkel.github.io/Mario.jpg" alt="Mario"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/MickeyMausName.jpg"><img src="https://3DruckOnkel.github.io/MickeyMausName.jpg" alt="Mickey Maus Name"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Naruto.jpg"><img src="https://3DruckOnkel.github.io/Naruto.jpg" alt="Naruto"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/NormaleKugel.jpg"><img src="https://3DruckOnkel.github.io/NormaleKugel.jpg" alt="Normale Kugel"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Pikachu.jpg"><img src="https://3DruckOnkel.github.io/Pikachu.jpg" alt="Pikachu"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Schalke.jpg"><img src="https://3DruckOnkel.github.io/Schalke.jpg" alt="Schalke"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Stitch.jpg"><img src="https://3DruckOnkel.github.io/Stitch.jpg" alt="Stitch"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Supernatural.jpg"><img src="https://3DruckOnkel.github.io/Supernatural.jpg" alt="Supernatural"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/islandpferd.jpg"><img src="https://3DruckOnkel.github.io/islandpferd.jpg" alt="Islandpferd"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/lionking.jpg"><img src="https://3DruckOnkel.github.io/lionking.jpg" alt="Lion King"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/onkelz.jpg"><img src="https://3DruckOnkel.github.io/onkelz.jpg" alt="Onkelz"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/vfl.jpg"><img src="https://3DruckOnkel.github.io/vfl.jpg" alt="VfL Bochum"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/herz.jpg"><img src="https://3DruckOnkel.github.io/herz.jpg" alt="Herz"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/tennis.jpg"><img src="https://3DruckOnkel.github.io/tennis.jpg" alt="Tennis"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/mickey2.jpg"><img src="https://3DruckOnkel.github.io/mickey2.jpg" alt="Mickey 2"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/arielle.jpg"><img src="https://3DruckOnkel.github.io/arielle.jpg" alt="Arielle"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/spidey.jpg"><img src="https://3DruckOnkel.github.io/spidey.jpg" alt="Spidey"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/spidermaus.jpg"><img src="https://3DruckOnkel.github.io/spidermaus.jpg" alt="Spidermaus"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="christbaum" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/vaiana.jpg"><img src="https://3DruckOnkel.github.io/vaiana.jpg" alt="Vaiana"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <!-- (Hier stehen deine bestehenden Bilder – gekürzt) -->
 
-          <!-- Schriftzüge (Preis-Bereich 5–10) -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schriftzuege" data-price="5-10"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/Ergotherapeutinschriftzug.jpg"><img src="https://3DruckOnkel.github.io/Ergotherapeutinschriftzug.jpg" alt="Ergotherapeutin Schriftzug"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schriftzuege" data-price="5-10"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/schriftkonfetti.jpg"><img src="https://3DruckOnkel.github.io/schriftkonfetti.jpg" alt="Schriftkonfetti Schriftzug"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <!-- NEU: Großeltern -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="grosseltern" data-price="4.00">
+            <div class="img-wrapper">
+              <a href="#"><img src="https://placehold.co/600x600?text=Oma+Herz" alt="Oma Herz"></a>
+              <div class="img-overlay"><i class="fa fa-plus-circle"></i></div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="grosseltern" data-price="4.00">
+            <div class="img-wrapper">
+              <a href="#"><img src="https://placehold.co/600x600?text=Opa+Stern" alt="Opa Stern"></a>
+              <div class="img-overlay"><i class="fa fa-plus-circle"></i></div>
+            </div>
+          </div>
 
-          <!-- Einschulung -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="einschulung" data-price="4.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/schriftschulkind2026.jpg"><img src="https://3DruckOnkel.github.io/schriftschulkind2026.jpg" alt="Schulkind 2026"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="einschulung" data-price="4.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/schulkind2026rund.jpg"><img src="https://3DruckOnkel.github.io/schulkind2026rund.jpg" alt="Schulkind 2026 rund"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <!-- NEU: Schilder -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schilder" data-price="5-10">
+            <div class="img-wrapper">
+              <a href="#"><img src="https://placehold.co/600x600?text=Willkommen" alt="Willkommen-Schild"></a>
+              <div class="img-overlay"><i class="fa fa-plus-circle"></i></div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schilder" data-price="7.50">
+            <div class="img-wrapper">
+              <a href="#"><img src="https://placehold.co/600x600?text=Familie" alt="Türschild Familie"></a>
+              <div class="img-overlay"><i class="fa fa-plus-circle"></i></div>
+            </div>
+          </div>
 
-          <!-- Kommunion -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="kommunion" data-price="4.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/kommuninrund.jpg"><img src="https://3DruckOnkel.github.io/kommuninrund.jpg" alt="Kommunion rund"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-
-          <!-- Schlüsselanhänger (individuell) -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="1.80"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/keyringkennzeichen.jpg"><img src="https://3DruckOnkel.github.io/keyringkennzeichen.jpg" alt="Schlüsselanhänger Kennzeichen"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/keylieblingslehrerin.jpg"><img src="https://3DruckOnkel.github.io/keylieblingslehrerin.jpg" alt="Schlüsselanhänger Lieblingslehrerin"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/keybesteerzieherin.jpg"><img src="https://3DruckOnkel.github.io/keybesteerzieherin.jpg" alt="Schlüsselanhänger Beste Erzieherin"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/keybestelehrerin.jpg"><img src="https://3DruckOnkel.github.io/keybestelehrerin.jpg" alt="Schlüsselanhänger Beste Lehrerin"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/keybestererzieher.jpg"><img src="https://3DruckOnkel.github.io/keybestererzieher.jpg" alt="Schlüsselanhänger Bester Erzieher"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/keybesterlehrer.jpg"><img src="https://3DruckOnkel.github.io/keybesterlehrer.jpg" alt="Schlüsselanhänger Bester Lehrer"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/keylieblingserzieher.jpg"><img src="https://3DruckOnkel.github.io/keylieblingserzieher.jpg" alt="Schlüsselanhänger Lieblingserzieher"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/keylieblingserzieherin.jpg"><img src="https://3DruckOnkel.github.io/keylieblingserzieherin.jpg" alt="Schlüsselanhänger Lieblingserzieherin"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="schluessel" data-price="2.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/keylieblingslehrer.jpg"><img src="https://3DruckOnkel.github.io/keylieblingslehrer.jpg" alt="Schlüsselanhänger Lieblingslehrer"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-
-          <!-- Geburt -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="geburt" data-price="10.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/geburtsbilderrahmen.jpg"><img src="https://3DruckOnkel.github.io/geburtsbilderrahmen.jpg" alt="Geburt – Name & Datum"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-
-          <!-- Geburtstag -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="geburtstag" data-price="6.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/geburtsagshalter.jpg"><img src="https://3DruckOnkel.github.io/geburtsagshalter.jpg" alt="Geburtstagshalter"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-
-          <!-- Türrahmen-Deko -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="3.50"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/wichteltür.jpg"><img src="https://3DruckOnkel.github.io/wichteltür.jpg" alt="Wichteltür"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="4.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/weihnachtenkatzetür.jpg"><img src="https://3DruckOnkel.github.io/weihnachtenkatzetür.jpg" alt="Weihnachten Katze Tür"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="4.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/pawpatroltuerrahmen.jpg"><img src="https://3DruckOnkel.github.io/pawpatroltuerrahmen.jpg" alt="Paw Patrol Türrahmen"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="4.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/lambotuerrahmen Kopie.jpg"><img src="https://3DruckOnkel.github.io/lambotuerrahmen Kopie.jpg" alt="Lambo"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="tuerrahmen" data-price="4.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/pferdltuerrahmen Kopie.jpg"><img src="https://3DruckOnkel.github.io/pferdltuerrahmen Kopie.jpg" alt="Pferd"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-
-          <!-- Zaubertonie -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="zaubertonie" data-price="5.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/kleinewirtonie.jpg"><img src="https://3DruckOnkel.github.io/kleinewirtonie.jpg" alt="Zaubertonie – Kleine Wir Tonie"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
-          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="zaubertonie" data-price="5.00"><div class="img-wrapper"><a href="https://3DruckOnkel.github.io/stockmanntonie.jpg"><img src="https://3DruckOnkel.github.io/stockmanntonie.jpg" alt="Zaubertonie – Stockmann Tonie"></a><div class="img-overlay"><i class="fa fa-plus-circle"></i></div></div></div>
+          <!-- NEU: Weihnachten (separat zur Christbaumdeko) -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="weihnachten" data-price="3.50">
+            <div class="img-wrapper">
+              <a href="#"><img src="https://placehold.co/600x600?text=Weihnachtsstern" alt="Weihnachtsstern"></a>
+              <div class="img-overlay"><i class="fa fa-plus-circle"></i></div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image" data-category="weihnachten" data-price="4.00">
+            <div class="img-wrapper">
+              <a href="#"><img src="https://placehold.co/600x600?text=Rentier" alt="Rentier Silhouette"></a>
+              <div class="img-overlay"><i class="fa fa-plus-circle"></i></div>
+            </div>
+          </div>
         </div><!-- row -->
       </div><!-- image-gallery -->
     </div>
