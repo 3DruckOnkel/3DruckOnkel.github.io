@@ -129,9 +129,10 @@
     #image-gallery[data-active="schilder"] .image[data-category="schilder"],
     #image-gallery[data-active="weihnachten"] .image[data-category="weihnachten"],
     #image-gallery[data-active="klemmbaufigur"] .image[data-category="klemmbaufigur"],
-    #image-gallery[data-active="tonieboxhalter"] .image[data-category="tonieboxhalter"] {
-      display:block !important;
-    }
+    #image-gallery[data-active="tonieboxhalter"] .image[data-category="tonieboxhalter"],
+    #image-gallery[data-active="fussballvereine"] .image[data-category="fussballvereine"] {
+  display:block !important;
+}
     /* -------------------- PRICE CHIP -------------------- */
     .price-chip{
       position:absolute; left:10px; bottom:10px;
@@ -303,7 +304,14 @@
     <div class="category-sub">Alle verfügbaren Figuren</div>
   </a>
 </div>
-
+        
+<div class="col-sm-6 col-md-3">
+  <a href="#" class="category-card show-gallery" data-category="fussballvereine">
+    <div class="category-icon"><i class="fa fa-futbol-o"></i></div>
+    <div class="category-title">Fußballvereine</div>
+    <div class="category-sub">Fans & Vereinsliebe</div>
+  </a>
+</div>
         <div class="col-sm-6 col-md-3">
           <span class="category-card" title="Demnächst" style="opacity:.55; cursor:not-allowed;">
             <div class="category-icon"><i class="fa fa-ellipsis-h"></i></div>
@@ -600,6 +608,20 @@
             </div>
           </div>
 
+
+
+          <!--fussball-->
+          <!-- Fußballvereine -->
+
+<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 image"
+     data-category="fussballvereine" data-price="9.00">
+  <div class="img-wrapper">
+    <a href="https://3DruckOnkel.github.io/schalkedeko.jpg">
+      <img src="https://3DruckOnkel.github.io/schalkedeko.jpg" alt="Fußballverein – Schalke 04">
+    </a>
+    <div class="img-overlay"><i class="fa fa-plus-circle"></i></div>
+  </div>
+</div>
 
             
           </div>
